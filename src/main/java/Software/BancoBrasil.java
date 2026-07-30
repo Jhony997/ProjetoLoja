@@ -5,21 +5,22 @@ import Cliente.Pessoa;
 import java.util.List;
 
 public class BancoBrasil {
-    private String[] listaCadastro;
+    private List<Pessoa> listaCadastro;
     private int valorTotal;
 
-    public BancoBrasil(String[] listaCadastro, int valorTotal) {
+    public BancoBrasil(List<Pessoa> listaCadastro, int valorTotal) {
         this.listaCadastro = listaCadastro;
         this.valorTotal = valorTotal;
     }
 
-    public String adicionarPessoa(String p,int id){
-       return listaCadastro[id] = p;
+    // adiciona a listaCadastro
+    public void adicionarPessoa(Pessoa p,int id){
+        listaCadastro.add(id,p);
     }
 
     public void acessarLista(){
-        for(String num : listaCadastro){
-            System.out.println(num);
+        for (Pessoa pessoa : listaCadastro) {
+            System.out.println(pessoa);
         }
     }
 }
