@@ -1,13 +1,16 @@
 package Servidor;
 
 import Cliente.Pessoa;
+import Loja.Loja;
 import Software.BancoBrasil;
 import Software.LocalTrabalho;
+import Loja.Produtos;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+
 
 public class ServerOn {
     private boolean isLigado;
@@ -17,6 +20,8 @@ public class ServerOn {
     LocalTrabalho trabalho = new LocalTrabalho(pessoa);
     Arquivos arquivos = new Arquivos();
     private int id = -1;
+    Produtos[] produtos = new Produtos[10];
+    Loja loja = new Loja(produtos);
 
 
     public ServerOn(boolean isLigado) {
@@ -25,10 +30,11 @@ public class ServerOn {
 
 
     public void rodarServidor(String input){
-        System.out.println("Comandos : !cadastro, !acessar, !off, !job, !save, !load");
+        System.out.println("Comandos : !cadastro, !acessar, !off, !job, !loja, !save, !load");
         while (isLigado){
 
             input = in.next();
+            int indexProduto = 0;
 
             switch (input){
                 case "!cadastro":
@@ -57,6 +63,26 @@ public class ServerOn {
                     trabalho.entregarSalario(pessoa);
                     System.out.println("Saldo atual : "+pessoa.getDinheiro()+"$");
                     break;
+                case "!loja":
+                    loja.carregarListaProdutos(loja);
+
+                    // teria que ser mais específico mais tem 2 casos?
+                    try {
+                        System.out.println("Digite valor id produto 1-10 (comprar)");
+                        indexProduto = in.nextInt();
+
+                        if(pessoa.getDinheiro() >= loja.acessaProdutos(indexProduto).getValor()) {
+                            pessoa.setDinheiro(pessoa.getDinheiro() - loja.acessaProdutos(indexProduto).getValor());
+                            System.out.println(pessoa.getNome() + " Comprou : " + loja.acessaProdutos(indexProduto) + "$");
+                            System.out.println(pessoa.getNome() + " Saldo atual : " + pessoa.getDinheiro() + "$");
+                        }else {
+                            System.err.println("Valor inválido!! Saldo atual : "+pessoa.getDinheiro()+"$");
+                        }
+                    }catch (Exception e){
+                        System.err.println("Error : " + e.getMessage());
+                        in.next();
+                    }
+                    break;
                 case "!off":
                     isLigado = false;
                     break;
@@ -75,7 +101,7 @@ public class ServerOn {
                     }
                     break;
                 default:
-                    System.out.println("[Inválido] Comandos : !cadastro, !acessar, !off, !job, !save, !load");
+                    System.out.println("[Inválido] Comandos : !cadastro, !acessar, !off, !job, !loja, !save, !load");
             }
         }
     }

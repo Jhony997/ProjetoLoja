@@ -1,8 +1,4 @@
-import Cliente.Pessoa;
-import Servidor.Arquivos;
-import Software.BancoBrasil;
-
-import java.io.IOException;
+package testes;
 
 public class test01 {
     public static void main(String[] args) {

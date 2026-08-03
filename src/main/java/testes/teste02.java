@@ -1,3 +1,5 @@
+package testes;
+
 import Servidor.ServerOn;
 
 public class teste02 {

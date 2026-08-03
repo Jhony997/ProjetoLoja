@@ -22,7 +22,6 @@ public class Pessoa {
 
     //get and set
 
-
     public void setIdade(int idade) {
         this.idade = idade;
     }

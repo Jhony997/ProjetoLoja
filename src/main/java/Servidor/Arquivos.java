@@ -43,24 +43,28 @@ public class Arquivos {
         System.out.println("Número salvo!");
     }
 
+    // 1 save load por vez!
     public void carregarArquivo(Pessoa pessoa,BancoBrasil banco,int index) throws IOException {
         FileReader fr = new FileReader(file);
         BufferedReader br = new BufferedReader(fr);
         String linha;
+        int indice = -1;
+
         while ((linha = br.readLine()) != null){
             System.out.println(linha);
+             indice++;
 
-            switch (linha) {
-                case "JJ":
+            switch (indice) {
+                case 0:
                  pessoa.setNome(linha);
                 break;
-                case "3016.0":
+                case 1:
              pessoa.setDinheiro(Double.parseDouble(linha));
                 break;
-                case "15":
+                case 2:
                 pessoa.setExperienciaTrabalho(Integer.parseInt(linha));
                 break;
-                case "30":
+                case 3:
                 pessoa.setIdade(Integer.parseInt(linha));
                 break;
                 default:
