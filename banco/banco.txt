@@ -1,4 +1,4 @@
-Bruno
-3418.0
-5
-22
+nome=Bruno
+dinheiro=10953.0
+xp=20
+idade=22

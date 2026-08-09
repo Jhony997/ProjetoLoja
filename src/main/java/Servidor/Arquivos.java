@@ -4,8 +4,6 @@ import Cliente.Pessoa;
 import Software.BancoBrasil;
 
 import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class Arquivos {
     private File diretorio = new File("banco");
@@ -31,12 +29,12 @@ public class Arquivos {
         BufferedWriter bw = new BufferedWriter(fw);
 
         //salvar dados
-        bw.write(pessoa.getNome()+"\n");
-        bw.write(String.valueOf(pessoa.getDinheiro()));
+        bw.write("nome="+ pessoa.getNome()+"\n");
+        bw.write("dinheiro=" + String.valueOf(pessoa.getDinheiro()));
         bw.write("\n");
-        bw.write(String.valueOf(pessoa.getExperienciaTrabalho()));
+        bw.write("xp="+String.valueOf(pessoa.getExperienciaTrabalho()));
         bw.write("\n");
-        bw.write(String.valueOf(pessoa.getIdade()));
+        bw.write("idade="+String.valueOf(pessoa.getIdade()));
         bw.write("\n");
         bw.flush();
         fw.close();
@@ -51,25 +49,26 @@ public class Arquivos {
         int indice = -1;
 
         while ((linha = br.readLine()) != null){
-            System.out.println(linha);
-             indice++;
+            String[] partes = linha.split("=");
+            String chave = partes[0];
+            String valor = partes[1];
+            System.out.println(valor);
 
-            switch (indice) {
-                case 0:
-                 pessoa.setNome(linha);
-                break;
-                case 1:
-             pessoa.setDinheiro(Double.parseDouble(linha));
-                break;
-                case 2:
-                pessoa.setExperienciaTrabalho(Integer.parseInt(linha));
-                break;
-                case 3:
-                pessoa.setIdade(Integer.parseInt(linha));
-                break;
-                default:
-                    System.out.println("Load inválido!");
-                    break;
+           switch (chave){
+               case "nome":
+                   pessoa.setNome(valor);
+                   break;
+               case "dinheiro":
+                   pessoa.setDinheiro(Double.parseDouble(valor));
+                   break;
+               case "xp":
+                   pessoa.setExperienciaTrabalho(Integer.parseInt(valor));
+                   break;
+               case "idade":
+                   pessoa.setIdade(Integer.parseInt(valor));
+                   break;
+               default:
+                   System.err.println("Dado não encontrado!");
             }
         }
         banco.adicionarPessoa(pessoa,index);
