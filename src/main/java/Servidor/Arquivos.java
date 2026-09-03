@@ -29,48 +29,38 @@ public class Arquivos {
         BufferedWriter bw = new BufferedWriter(fw);
 
         //salvar dados
-        bw.write("nome="+ pessoa.getNome()+"\n");
-        bw.write("dinheiro=" + String.valueOf(pessoa.getDinheiro()));
-        bw.write("\n");
-        bw.write("xp="+String.valueOf(pessoa.getExperienciaTrabalho()));
-        bw.write("\n");
-        bw.write("idade="+String.valueOf(pessoa.getIdade()));
-        bw.write("\n");
+        bw.write(pessoa.getNome()+";" + pessoa.getDinheiro() +";"+ pessoa.getExperienciaTrabalho() +";"+ pessoa.getIdade() +";"+ pessoa.getSalario());
         bw.flush();
         fw.close();
         System.out.println("Número salvo!");
     }
 
     // 1 save load por vez!
-    public void carregarArquivo(Pessoa pessoa,BancoBrasil banco,int index) throws IOException {
+    public void carregarArquivo(Pessoa pessoa) throws IOException {
         FileReader fr = new FileReader(file);
         BufferedReader br = new BufferedReader(fr);
         String linha;
         int indice = -1;
 
         while ((linha = br.readLine()) != null){
-            String[] partes = linha.split("=");
-            String chave = partes[0];
-            String valor = partes[1];
-            System.out.println(valor);
+            String[] partes = linha.split(";");
 
-           switch (chave){
-               case "nome":
-                   pessoa.setNome(valor);
-                   break;
-               case "dinheiro":
-                   pessoa.setDinheiro(Double.parseDouble(valor));
-                   break;
-               case "xp":
-                   pessoa.setExperienciaTrabalho(Integer.parseInt(valor));
-                   break;
-               case "idade":
-                   pessoa.setIdade(Integer.parseInt(valor));
-                   break;
-               default:
-                   System.err.println("Dado não encontrado!");
+            //recuperando as info!
+            pessoa.setNome(partes[0]);
+            pessoa.setDinheiro(Double.parseDouble(partes[1]));
+            pessoa.setExperienciaTrabalho(Integer.parseInt(partes[2]));
+            pessoa.setIdade(Integer.parseInt(partes[3]));
+            pessoa.setSalario(Integer.parseInt(partes[4]));
+
+            for (int i = 0; i < partes.length; i++) {
+                String chave = partes[0];
+                if(i > 0) {
+                    //dando print das info!
+                    String valor = partes[i];
+                    System.out.println(valor);
+                }
+
             }
         }
-        banco.adicionarPessoa(pessoa,index);
     }
 }

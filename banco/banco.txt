@@ -1,4 +1,1 @@
-nome=Bruno
-dinheiro=10953.0
-xp=20
-idade=22
+JJ;196.0;1;21;16

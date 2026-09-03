@@ -10,17 +10,28 @@ public class Pessoa {
     private double dinheiro;
     private Scanner in;
     private int experienciaTrabalho;
+    private int salario;
 
-    public Pessoa(String nome, int idade, double dinheiro,int experienciaTrabalho) {
+    public Pessoa(String nome, int idade, double dinheiro,int experienciaTrabalho, int salario) {
         this.nome = nome;
         this.idade = idade;
         this.dinheiro = dinheiro;
         this.experienciaTrabalho = experienciaTrabalho;
+        this.salario = salario;
     }
 
 
 
     //get and set
+
+
+    public int getSalario() {
+        return salario;
+    }
+
+    public void setSalario(int salario) {
+        this.salario = salario;
+    }
 
     public void setIdade(int idade) {
         this.idade = idade;
@@ -61,6 +72,8 @@ public class Pessoa {
                 ", idade=" + idade +
                 ", dinheiro=" + dinheiro +
                 ", in=" + in +
+                ", experienciaTrabalho=" + experienciaTrabalho +
+                ", salario=" + salario +
                 '}';
     }
 }

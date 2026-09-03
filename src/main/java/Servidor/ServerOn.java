@@ -2,7 +2,10 @@ package Servidor;
 
 import Cliente.Pessoa;
 import Loja.Loja;
+import Servidor.InfraServe.RespostaBanco;
+import Servidor.InfraServe.RespostaPessoa;
 import Software.BancoBrasil;
+import Servidor.InfraServe.InfraServidor;
 import Software.LocalTrabalho;
 import Loja.Produtos;
 
@@ -14,14 +17,18 @@ import java.util.Scanner;
 
 public class ServerOn {
     private boolean isLigado;
+    int idTest = -1;
+    int etapas = 0;
+
     private final Scanner in = new Scanner(System.in);
-    private final BancoBrasil bd = new BancoBrasil(new ArrayList<>(),3);
-    Pessoa pessoa = new Pessoa("", 0, 0,0);
-    LocalTrabalho trabalho = new LocalTrabalho(pessoa);
+
+
     Arquivos arquivos = new Arquivos();
     private int id = -1;
     Produtos[] produtos = new Produtos[10];
     Loja loja = new Loja(produtos);
+
+    InfraServidor s = new InfraServidor();
 
 
     public ServerOn(boolean isLigado) {
@@ -29,79 +36,42 @@ public class ServerOn {
     }
 
 
-    public void rodarServidor(String input){
-        System.out.println("Comandos : !cadastro, !acessar, !off, !job, !loja, !save, !load");
-        while (isLigado){
+    public void rodarServidor(String input) throws InputMismatchException, IOException {
+        //Inicia "login"
+        Arquivos cm = new Arquivos();
 
+            System.out.println("Digite seu nome : ");
             input = in.next();
-            int indexProduto = 0;
 
-            switch (input){
-                case "!cadastro":
-                    try {
-                        System.out.println("Digite seu nome : ");
-                        input = in.next();
+            System.out.println("Digite sua idade :");
+            int inIdade = in.nextInt();
 
-                        System.out.println("Digite sua idade :");
-                        int inIdade = in.nextInt();
+            System.out.println("Comandos : !off, !job, !load, !save");
 
-                        pessoa = new Pessoa(input, inIdade, 0,0);
-                        System.out.println("Cadastro criado!");
-                        id++;
+            idTest++;
+            Pessoa pessoaObj = RespostaPessoa.criarPessoa(input, inIdade);
+            RespostaBanco.cadastraPessoa(pessoaObj, idTest);
 
-                        bd.adicionarPessoa(pessoa,id);
-                    }catch (InputMismatchException e){
-                        System.out.println(e.getMessage() + " [Erro somente número!]");
-                        in.next();
-                    }
-                    break;
-                case "!acessar":
-                        bd.acessarLista();
-                    break;
+
+
+        while (isLigado) {
+            input = in.next();
+
+            switch (input) {
                 case "!job":
-                    System.out.println(pessoa.getNome() + " : Trabalhou por 72 horas!");
-                    trabalho.entregarSalario(pessoa);
-                    System.out.println("Saldo atual : "+pessoa.getDinheiro()+"$");
+                    RespostaPessoa.trabalhar(pessoaObj);
                     break;
-                case "!loja":
-                    loja.carregarListaProdutos(loja);
-
-                    // teria que ser mais específico mais tem 2 casos?
-                    try {
-                        System.out.println("Digite valor id produto 1-10 (comprar)");
-                        indexProduto = in.nextInt();
-
-                        if(pessoa.getDinheiro() >= loja.acessaProdutos(indexProduto).getValor()) {
-                            pessoa.setDinheiro(pessoa.getDinheiro() - loja.acessaProdutos(indexProduto).getValor());
-                            System.out.println(pessoa.getNome() + " Comprou : " + loja.acessaProdutos(indexProduto) + "$");
-                            System.out.println(pessoa.getNome() + " Saldo atual : " + pessoa.getDinheiro() + "$");
-                        }else {
-                            System.err.println("Valor inválido!! Saldo atual : "+pessoa.getDinheiro()+"$");
-                        }
-                    }catch (Exception e){
-                        System.err.println("Error : " + e.getMessage());
-                        in.next();
-                    }
+                case "!load":
+                    cm.carregarArquivo(pessoaObj);
+                    break;
+                case "!save":
+                    cm.salvarArquivo(pessoaObj);
                     break;
                 case "!off":
                     isLigado = false;
                     break;
-                case "!save":
-                    try {
-                        arquivos.salvarArquivo(pessoa);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                    break;
-                case "!load":
-                    try {
-                        arquivos.carregarArquivo(pessoa,bd,0);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                    break;
                 default:
-                    System.out.println("[Inválido] Comandos : !cadastro, !acessar, !off, !job, !loja, !save, !load");
+                    System.out.println("[Inválido] Comandos : !off, !job, !save, !load");
             }
         }
     }
