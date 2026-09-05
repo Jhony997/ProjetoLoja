@@ -1,16 +1,11 @@
 package Servidor;
 
 import Cliente.Pessoa;
-import Loja.Loja;
 import Servidor.InfraServe.RespostaBanco;
 import Servidor.InfraServe.RespostaPessoa;
 import Software.BancoBrasil;
-import Servidor.InfraServe.InfraServidor;
-import Software.LocalTrabalho;
-import Loja.Produtos;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -18,18 +13,7 @@ import java.util.Scanner;
 public class ServerOn {
     private boolean isLigado;
     int idTest = -1;
-    int etapas = 0;
-
     private final Scanner in = new Scanner(System.in);
-
-
-    Arquivos arquivos = new Arquivos();
-    private int id = -1;
-    Produtos[] produtos = new Produtos[10];
-    Loja loja = new Loja(produtos);
-
-    InfraServidor s = new InfraServidor();
-
 
     public ServerOn(boolean isLigado) {
         this.isLigado = isLigado;
@@ -37,41 +21,57 @@ public class ServerOn {
 
 
     public void rodarServidor(String input) throws InputMismatchException, IOException {
-        //Inicia "login"
+        //Carrega "login"
         Arquivos cm = new Arquivos();
+        Pessoa pessoaObj = new Pessoa("", 0, 0, 0, 0,0,20);
+        cm.carregarArquivo(pessoaObj);
 
-            System.out.println("Digite seu nome : ");
-            input = in.next();
+        if (pessoaObj.getNome().equalsIgnoreCase("")) {
+            pessoaObj = null;
+            System.err.println("Digite !cadastro iniciar!");
+        } else {
+            System.err.println("Perfil carregado! [ "+ pessoaObj.getNome() + " | " + pessoaObj.getDinheiro()+"$"+" ]" + " [ Divida Banco : " + pessoaObj.getDividaBanco()+"$" + " ] " + " [ Créditos emprestimo : " + pessoaObj.getCreditosBanco()+"$" + " ] ");
+        }
 
-            System.out.println("Digite sua idade :");
-            int inIdade = in.nextInt();
-
-            System.out.println("Comandos : !off, !job, !load, !save");
-
-            idTest++;
-            Pessoa pessoaObj = RespostaPessoa.criarPessoa(input, inIdade);
-            RespostaBanco.cadastraPessoa(pessoaObj, idTest);
-
-
-
+        System.out.println("Comandos : !off, !job, !load, !save, !emprestimo");
         while (isLigado) {
             input = in.next();
 
             switch (input) {
+                case "!cadastro":
+                    System.out.println("Digite seu nome : ");
+                    input = in.next();
+
+                    System.out.println("Digite sua idade :");
+                    int inIdade = in.nextInt();
+
+                    idTest++;
+                    pessoaObj = RespostaPessoa.criarPessoa(input, inIdade);
+                    RespostaBanco.cadastraPessoa(pessoaObj, idTest);
+                    break;
                 case "!job":
                     RespostaPessoa.trabalhar(pessoaObj);
                     break;
-                case "!load":
-                    cm.carregarArquivo(pessoaObj);
-                    break;
                 case "!save":
                     cm.salvarArquivo(pessoaObj);
+                    break;
+                case "!emprestimo":
+                    try {
+                        System.out.println("Digite valor emprestimo!");
+                        int value = in.nextInt();
+                        RespostaBanco.emprestimoBanco(pessoaObj,value);
+                    }catch (Exception e){
+                        System.err.println(e.getCause() + "| Error digitação!");
+                    }
+                    break;
+                case "!pay":
+                    RespostaBanco.servePaga(pessoaObj);
                     break;
                 case "!off":
                     isLigado = false;
                     break;
                 default:
-                    System.out.println("[Inválido] Comandos : !off, !job, !save, !load");
+                    System.out.println("[Inválido] Comandos : !off, !job, !save, !load, !emprestimo");
             }
         }
     }

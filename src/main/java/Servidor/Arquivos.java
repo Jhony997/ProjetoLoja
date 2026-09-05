@@ -29,10 +29,11 @@ public class Arquivos {
         BufferedWriter bw = new BufferedWriter(fw);
 
         //salvar dados
-        bw.write(pessoa.getNome()+";" + pessoa.getDinheiro() +";"+ pessoa.getExperienciaTrabalho() +";"+ pessoa.getIdade() +";"+ pessoa.getSalario());
+        bw.write(pessoa.getNome()+";" + pessoa.getDinheiro() +";"+ pessoa.getExperienciaTrabalho() +";"+ pessoa.getIdade() + ";"+pessoa.getCargoIndex() + ";"+pessoa.getDividaBanco() + ";"+pessoa.getCreditosBanco());
         bw.flush();
         fw.close();
-        System.out.println("Número salvo!");
+        bw.close();
+        System.out.println("Progresso salvo!");
     }
 
     // 1 save load por vez!
@@ -50,17 +51,9 @@ public class Arquivos {
             pessoa.setDinheiro(Double.parseDouble(partes[1]));
             pessoa.setExperienciaTrabalho(Integer.parseInt(partes[2]));
             pessoa.setIdade(Integer.parseInt(partes[3]));
-            pessoa.setSalario(Integer.parseInt(partes[4]));
-
-            for (int i = 0; i < partes.length; i++) {
-                String chave = partes[0];
-                if(i > 0) {
-                    //dando print das info!
-                    String valor = partes[i];
-                    System.out.println(valor);
-                }
-
-            }
+            pessoa.setCargoIndex(Integer.parseInt(partes[4]));
+            pessoa.setDividaBanco(Integer.parseInt(partes[5]));
+            pessoa.setCreditosBanco(Integer.parseInt(partes[6]));
         }
     }
 }

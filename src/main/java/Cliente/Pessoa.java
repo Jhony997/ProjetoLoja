@@ -8,16 +8,19 @@ public class Pessoa {
     private String nome;
     private int idade;
     private double dinheiro;
-    private Scanner in;
+    private int cargoIndex;
     private int experienciaTrabalho;
-    private int salario;
+    private int creditosBanco;
+    private int dividaBanco;
 
-    public Pessoa(String nome, int idade, double dinheiro,int experienciaTrabalho, int salario) {
+    public Pessoa(String nome, int idade, double dinheiro,int experienciaTrabalho,int cargoIndex, int dividaBanco, int creditosBanco) {
         this.nome = nome;
         this.idade = idade;
         this.dinheiro = dinheiro;
         this.experienciaTrabalho = experienciaTrabalho;
-        this.salario = salario;
+        this.cargoIndex = cargoIndex;
+        this.dividaBanco = dividaBanco;
+        this.creditosBanco = creditosBanco;
     }
 
 
@@ -25,14 +28,29 @@ public class Pessoa {
     //get and set
 
 
-    public int getSalario() {
-        return salario;
+    public int getCreditosBanco() {
+        return creditosBanco;
     }
 
-    public void setSalario(int salario) {
-        this.salario = salario;
+    public void setCreditosBanco(int creditosBanco) {
+        this.creditosBanco = creditosBanco;
     }
 
+    public int getDividaBanco() {
+        return dividaBanco;
+    }
+
+    public void setDividaBanco(int dividaBanco) {
+        this.dividaBanco = dividaBanco;
+    }
+
+    public int getCargoIndex() {
+        return cargoIndex;
+    }
+
+    public void setCargoIndex(int cargoIndex) {
+        this.cargoIndex = cargoIndex;
+    }
     public void setIdade(int idade) {
         this.idade = idade;
     }
@@ -71,9 +89,8 @@ public class Pessoa {
                 "nome='" + nome + '\'' +
                 ", idade=" + idade +
                 ", dinheiro=" + dinheiro +
-                ", in=" + in +
                 ", experienciaTrabalho=" + experienciaTrabalho +
-                ", salario=" + salario +
+                ", cargoIndex=" + cargoIndex +
                 '}';
     }
 }

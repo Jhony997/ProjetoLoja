@@ -1,6 +1,7 @@
 package Servidor.InfraServe;
 
 import Cliente.Pessoa;
+import Software.LocalTrabalho;
 
 public class RespostaPessoa{
     private Pessoa pessoa;
@@ -10,19 +11,12 @@ public class RespostaPessoa{
     }
 
     public static Pessoa criarPessoa(String nome,int idade){
-        return new Pessoa(nome,idade,0,0,1);
+        return new Pessoa(nome,idade,0,0,0,0,20);
     }
 
 
     public static void trabalhar(Pessoa p){
-        p.setDinheiro(p.getDinheiro() + p.getSalario());
-        p.setExperienciaTrabalho(p.getExperienciaTrabalho() + 1);
-        System.out.println(p.getNome() + " | Total carteira : " + p.getDinheiro()+"$");
-
-        if(p.getExperienciaTrabalho() >= 10){
-            p.setSalario(p.getSalario() + 5);
-            p.setExperienciaTrabalho(0);
-            System.out.println(p.getNome() + "| Aumento Salario : " + p.getSalario()+"$");
-        }
+        LocalTrabalho clt = new LocalTrabalho(p);
+        clt.entregarSalario(p);
     }
 }

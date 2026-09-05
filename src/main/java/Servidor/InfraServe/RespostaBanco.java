@@ -13,9 +13,16 @@ public class RespostaBanco {
         this.bd = bd;
     }
 
+    public static void servePaga(Pessoa p){
+        bd.pagarDivida(p);
+    }
+
+    public static void emprestimoBanco(Pessoa p, int valor){
+        bd.fazerEmprestimo(p,valor);
+    }
+
     public static void cadastraPessoa(Pessoa p, int id){
         bd.adicionarPessoa(p,id);
-
         //da log das pessoas
         bd.acessarLista();
     }
