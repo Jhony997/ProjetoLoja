@@ -4,10 +4,8 @@ import Cliente.Pessoa;
 import Software.LocalTrabalho;
 
 public class RespostaPessoa{
-    private Pessoa pessoa;
 
     public RespostaPessoa(Pessoa p) {
-        this.pessoa = p;
     }
 
     public static Pessoa criarPessoa(String nome,int idade){

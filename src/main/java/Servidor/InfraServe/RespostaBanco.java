@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class RespostaBanco {
     private static BancoBrasil bd = new BancoBrasil(new ArrayList<>(),3);
-    int id = 0;
+
 
     public RespostaBanco(BancoBrasil bd) {
         this.bd = bd;

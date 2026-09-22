@@ -2,6 +2,7 @@ package Servidor;
 
 import Cliente.Pessoa;
 import Servidor.InfraServe.RespostaBanco;
+import Servidor.InfraServe.RespostaLoja;
 import Servidor.InfraServe.RespostaPessoa;
 import Software.BancoBrasil;
 
@@ -23,6 +24,9 @@ public class ServerOn {
     public void rodarServidor(String input) throws InputMismatchException, IOException {
         //Carrega "login"
         Arquivos cm = new Arquivos();
+        RespostaLoja rp = new RespostaLoja();
+        rp.novosProdutos();
+
         Pessoa pessoaObj = new Pessoa("", 0, 0, 0, 0,0,20);
         cm.carregarArquivo(pessoaObj);
 
@@ -33,7 +37,7 @@ public class ServerOn {
             System.err.println("Perfil carregado! [ "+ pessoaObj.getNome() + " | " + pessoaObj.getDinheiro()+"$"+" ]" + " [ Divida Banco : " + pessoaObj.getDividaBanco()+"$" + " ] " + " [ Créditos emprestimo : " + pessoaObj.getCreditosBanco()+"$" + " ] ");
         }
 
-        System.out.println("Comandos : !off, !job, !load, !save, !emprestimo");
+        System.out.println("Comandos : !off, !job, !load, !save, !emprestimo, !produtos");
         while (isLigado) {
             input = in.next();
 
@@ -67,11 +71,22 @@ public class ServerOn {
                 case "!pay":
                     RespostaBanco.servePaga(pessoaObj);
                     break;
+                case "!produtos":
+                    rp.acessarProdutos();
+                    try {
+                        System.err.println("[ Digite valor compra 1-4! ]");
+                       int valor = in.nextInt();
+                        rp.comprarProduto(valor,pessoaObj);
+                    }catch (InputMismatchException e){
+                        in.next();
+                        System.err.println(e.getCause() + " | Erro somente digite números!");
+                    }
+                    break;
                 case "!off":
                     isLigado = false;
                     break;
                 default:
-                    System.out.println("[Inválido] Comandos : !off, !job, !save, !load, !emprestimo");
+                    System.out.println("[Inválido] Comandos : !off, !job, !save, !load, !emprestimo, !produtos");
             }
         }
     }

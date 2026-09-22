@@ -6,8 +6,8 @@ import Software.BancoBrasil;
 import java.io.*;
 
 public class Arquivos {
-    private File diretorio = new File("banco");
-    private File file = new File(diretorio,"banco.txt");
+    private final File diretorio = new File("banco");
+    private final File file = new File(diretorio,"banco.txt");
 
 
     public void criarArquivo() throws IOException {
